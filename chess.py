@@ -49,16 +49,18 @@ def totalValue(board):
                 sum+=pieceValue(board[i][j])
     return sum
 
-def pieceLegalMove(piece, board):
-
-    xpos=piece.xpos
-    ypos=piece.ypos
-
+def pieceLegalMove(x, y, board):
+    if board[x][y]=='':
+        return ''
+    piece=board[x][y]    
+    side=piece.side
     if piece.name=='R':
-        return pieceMove.Rook(xpos,ypos,board)            
+        return pieceMove.Rook(side,x,y,board)            
     
 board=boardGenerate()
 print(totalValue(board))
+board[5][3]=Piece('w','R')
+print(pieceLegalMove(5,3,board))
 
 visual.drawBoard(board)
 

@@ -3,9 +3,7 @@ def outOfBoard(x, y):
         return True
     return False
 
-def Rook(x0,y0,friendly,enemy):
-    friendlyPos=[(i.xpos,i.ypos) for i in friendly]
-    enemyPos=[(i.xpos,i.ypos) for i in enemy]
+def Rook(friendly,x0,y0,board):
     move=[]
     take=[]
 
@@ -13,55 +11,61 @@ def Rook(x0,y0,friendly,enemy):
     y=y0
     while True:
         x+=1
-        if (x,y) in enemyPos:
-            take.append((x,y))
+        if outOfBoard(x,y):
             break
-        elif outOfBoard(x,y) or (x,y) in friendlyPos:
+        elif board[x][y]=='':
+            move.append((x,y))
+        elif board[x][y].side==friendly:         
             break
         else:
-            move.append((x,y)) 
+            take.append((x,y))
+            break
 
     x=x0
     y=y0
     while True:
         x-=1
-        if (x,y) in enemyPos:
-            take.append((x,y))
+        if outOfBoard(x,y):
             break
-        elif outOfBoard(x,y) or (x,y) in friendlyPos:
+        elif board[x][y]=='':
+            move.append((x,y))
+        elif board[x][y].side==friendly:         
             break
         else:
-            move.append((x,y))          
+            take.append((x,y))
+            break         
 
     x=x0
     y=y0
     while True:
         y+=1
-        if (x,y) in enemyPos:
-            take.append((x,y))
+        if outOfBoard(x,y):
             break
-        elif outOfBoard(x,y) or (x,y) in friendlyPos:
+        elif board[x][y]=='':
+            move.append((x,y))
+        elif board[x][y].side==friendly:         
             break
         else:
-            move.append((x,y)) 
+            take.append((x,y))
+            break 
 
     x=x0
     y=y0
     while True:
         y-=1
-        if (x,y) in enemyPos:
-            take.append((x,y))
+        if outOfBoard(x,y):
             break
-        elif outOfBoard(x,y) or (x,y) in friendlyPos:
+        elif board[x][y]=='':
+            move.append((x,y))
+        elif board[x][y].side==friendly:         
             break
         else:
-            move.append((x,y))    
+            take.append((x,y))
+            break   
     return move, take             
 
 
-def Bishop(x0,y0,friendly,enemy):
-    friendlyPos=[(i.xpos,i.ypos) for i in friendly]
-    enemyPos=[(i.xpos,i.ypos) for i in enemy]
+def Bishop(friendly,x0,y0,board):
     move=[]
     take=[]
 
@@ -70,50 +74,58 @@ def Bishop(x0,y0,friendly,enemy):
     while True:
         x+=1
         y+=1
-        if (x,y) in enemyPos:
-            take.append((x,y))
+        if outOfBoard(x,y):
             break
-        elif outOfBoard(x,y) or (x,y) in friendlyPos:
+        elif board[x][y]=='':
+            move.append((x,y))
+        elif board[x][y].side==friendly:         
             break
         else:
-            move.append((x,y)) 
+            take.append((x,y))
+            break
 
     x=x0
     y=y0
     while True:
         x+=1
         y-=1
-        if (x,y) in enemyPos:
-            take.append((x,y))
+        if outOfBoard(x,y):
             break
-        elif outOfBoard(x,y) or (x,y) in friendlyPos:
+        elif board[x][y]=='':
+            move.append((x,y))
+        elif board[x][y].side==friendly:         
             break
         else:
-            move.append((x,y))          
+            take.append((x,y))
+            break         
 
     x=x0
     y=y0
     while True:
         x-=1
         y+=1
-        if (x,y) in enemyPos:
-            take.append((x,y))
+        if outOfBoard(x,y):
             break
-        elif outOfBoard(x,y) or (x,y) in friendlyPos:
+        elif board[x][y]=='':
+            move.append((x,y))
+        elif board[x][y].side==friendly:         
             break
         else:
-            move.append((x,y)) 
+            take.append((x,y))
+            break
 
     x=x0
     y=y0
     while True:
         x-=1
         y-=1
-        if (x,y) in enemyPos:
-            take.append((x,y))
+        if outOfBoard(x,y):
             break
-        elif outOfBoard(x,y) or (x,y) in friendlyPos:
+        elif board[x][y]=='':
+            move.append((x,y))
+        elif board[x][y].side==friendly:         
             break
         else:
-            move.append((x,y))    
+            take.append((x,y))
+            break   
     return move, take        
