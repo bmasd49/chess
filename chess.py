@@ -7,13 +7,12 @@ class Piece:
 
 pieceorder=['R','N','B','Q','K','B','N','R']
 def boardGenerate():
-    board=[[Piece('','__') for _ in range(8)] for _ in range(8)]
+    board=[[Piece('','  ') for _ in range(8)] for _ in range(8)]
     for i in range(8):
         board[i][0]=Piece('w',pieceorder[i])
         board[i][1]=Piece('w','p')
         board[i][7]=Piece('b',pieceorder[i])
         board[i][6]=Piece('b','p')
-
     return board
 
 def pieceValue(piece):
@@ -50,24 +49,29 @@ def pieceLegalMove(x, y, board):
     if piece.side=='':
         return []
     if piece.name=='R':
-        return pieceMove.Rook(piece.side,x,y,board)            
+        return (x,y), pieceMove.Rook(piece.side,x,y,board)            
     elif piece.name=='B':
-        return pieceMove.Bishop(piece.side,x,y,board)
+        return (x,y), pieceMove.Bishop(piece.side,x,y,board)
     elif piece.name=='N':
-        return pieceMove.Knight(piece.side,x,y,board)
+        return (x,y), pieceMove.Knight(piece.side,x,y,board)
+    elif piece.name=='Q':
+        return (x,y), pieceMove.Queen(piece.side,x,y,board)
+    elif piece.name=='K':
+        return (x,y), pieceMove.King(piece.side,x,y,board)   
+    elif piece.name=='p':
+        return (x,y), pieceMove.pawn(piece.side,x,y,board)     
 board=boardGenerate()
-xtest=5
+xtest=4
 ytest=4
-board[xtest][ytest]=Piece('w','R')
+board[xtest][ytest]=Piece('w','K')
 
 legalmove=pieceLegalMove(xtest,ytest,board)
-for x,y in legalmove[0]:
-    board[x][y]=Piece('',' O')
-
+print(legalmove)
 for x,y in legalmove[1]:
     board[x][y]=Piece('',' X')
 
-print(legalmove)    
+
+
 visual.drawBoard(board)
 
 
