@@ -3,7 +3,6 @@ def outOfBoard(x, y):
         return True
     return False
 
-
 def Rook(friendly,x0,y0,board):
     move=[]
 
@@ -63,7 +62,6 @@ def Rook(friendly,x0,y0,board):
             move.append((x,y))
             break   
     return move            
-
 
 def Bishop(friendly,x0,y0,board):
     move=[]
@@ -130,7 +128,6 @@ def Bishop(friendly,x0,y0,board):
             break   
     return move     
 
-
 def Knight(friendly,x0,y0,board):
     move=[]
 
@@ -150,7 +147,6 @@ def Knight(friendly,x0,y0,board):
     y=y0+1
     if outOfBoard(x,y):
         pass
-        print('passed')
     elif board[x][y].side=='':
         move.append((x,y))
     elif board[x][y].side==friendly:         
@@ -226,10 +222,8 @@ def Knight(friendly,x0,y0,board):
 
     return move       
 
-
 def Queen(friendly,x0,y0,board):
     return Rook(friendly,x0,y0,board) + Bishop(friendly,x0,y0,board)
-
 
 def King(friendly,x0,y0,board):
     move=[]
@@ -322,4 +316,72 @@ def King(friendly,x0,y0,board):
     else:
         move.append((x,y)) 
 
-    return move                   
+    return move    
+
+def pawn(friendly,x0,y0,board):
+    move=[]
+    x=x0
+    y=y0
+    if friendly=='w':
+        enemy='b'
+        y=y0+1
+        if outOfBoard(x,y):
+            pass
+        elif board[x][y].side=='':
+            move.append((x,y))
+
+        if y0==1:
+            y=y0+2
+            if outOfBoard(x,y):
+                pass
+            elif board[x][y].side=='':
+                move.append((x,y))
+
+        x=x0+1
+        y=y0+1
+        if outOfBoard(x,y):
+            pass
+        elif board[x][y].side==enemy:
+            move.append((x,y))
+
+        x=x0-1
+        y=y0+1
+        if outOfBoard(x,y):
+            pass
+        elif board[x][y].side==enemy:
+            move.append((x,y))
+
+    elif friendly=='b':
+        enemy='w'
+        y=y0-1
+        if outOfBoard(x,y):
+            pass
+        elif board[x][y].side=='':
+            move.append((x,y))
+
+        if y0==6:
+            y=y0-2
+            if outOfBoard(x,y):
+                pass
+            elif board[x][y].side=='':
+                move.append((x,y))
+
+        x=x0+1
+        y=y0-1
+        if outOfBoard(x,y):
+            pass
+        elif board[x][y].side==enemy:
+            move.append((x,y))
+
+        x=x0-1
+        y=y0-1
+        if outOfBoard(x,y):
+            pass
+        elif board[x][y].side==enemy:
+            move.append((x,y))
+
+    return move            
+
+
+
+

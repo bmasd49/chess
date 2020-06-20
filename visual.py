@@ -10,4 +10,4 @@ def drawBoard(board):
         for j in range(8):
             print('',drawboard[i][j],'|',end='')
         print('\n    -----------------------------------------')
-    print('       0     1    2    3    4    5    6    7  ')
+    print('       0    1    2    3    4    5    6    7  ')

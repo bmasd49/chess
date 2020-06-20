@@ -47,8 +47,8 @@ def pieceLegalMove(x, y, board):
     piece=board[x][y]
 
     if piece.side=='':
-        return []
-    if piece.name=='R':
+        return (x,y), []
+    elif piece.name=='R':
         return (x,y), pieceMove.Rook(piece.side,x,y,board)            
     elif piece.name=='B':
         return (x,y), pieceMove.Bishop(piece.side,x,y,board)
@@ -60,19 +60,33 @@ def pieceLegalMove(x, y, board):
         return (x,y), pieceMove.King(piece.side,x,y,board)   
     elif piece.name=='p':
         return (x,y), pieceMove.pawn(piece.side,x,y,board)     
-board=boardGenerate()
-xtest=4
-ytest=4
-board[xtest][ytest]=Piece('w','N')
 
-legalmove=pieceLegalMove(xtest,ytest,board)
+def legalMove(board):
+    move=[]
+    for x in range(8):
+        for y in range(8):
+            if pieceLegalMove(x,y,board)[1]!=[]:
+                move.append(pieceLegalMove(x,y,board)) 
+    return move        
 
-print(f'possible movement of a {board[xtest][ytest].side} {board[xtest][ytest].name} at {xtest,ytest}')
-for x,y in legalmove[1]:
-    board[x][y]=Piece('',' X')
+def makeMove(moveFrom, moveTo, inputboard):
+    board=inputboard.copy()
+    board[moveTo[0]][moveTo[1]]= board[moveFrom[0]][moveFrom[1]]
+    board[moveFrom[0]][moveFrom[1]]= Piece('','  ')
+
+if __name__ == "__main__":
+    board=boardGenerate()
+    
+
+    makeMove((4,1),(4,3),board)
+    moveList= legalMove(board)
+    for move in moveList:
+        for destination in move[1]:
+            pass
 
 
+    visual.drawBoard(board)
+    pass
 
-visual.drawBoard(board)
 
 
