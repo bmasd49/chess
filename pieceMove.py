@@ -13,7 +13,7 @@ def Rook(friendly,x0,y0,board):
         x+=1
         if outOfBoard(x,y):
             break
-        elif board[x][y]=='':
+        elif board[x][y].side=='':
             move.append((x,y))
         elif board[x][y].side==friendly:         
             break
@@ -27,7 +27,7 @@ def Rook(friendly,x0,y0,board):
         x-=1
         if outOfBoard(x,y):
             break
-        elif board[x][y]=='':
+        elif board[x][y].side=='':
             move.append((x,y))
         elif board[x][y].side==friendly:         
             break
@@ -41,7 +41,7 @@ def Rook(friendly,x0,y0,board):
         y+=1
         if outOfBoard(x,y):
             break
-        elif board[x][y]=='':
+        elif board[x][y].side=='':
             move.append((x,y))
         elif board[x][y].side==friendly:         
             break
@@ -55,7 +55,7 @@ def Rook(friendly,x0,y0,board):
         y-=1
         if outOfBoard(x,y):
             break
-        elif board[x][y]=='':
+        elif board[x][y].side=='':
             move.append((x,y))
         elif board[x][y].side==friendly:         
             break
@@ -76,7 +76,7 @@ def Bishop(friendly,x0,y0,board):
         y+=1
         if outOfBoard(x,y):
             break
-        elif board[x][y]=='':
+        elif board[x][y].side=='':
             move.append((x,y))
         elif board[x][y].side==friendly:         
             break
@@ -91,7 +91,7 @@ def Bishop(friendly,x0,y0,board):
         y-=1
         if outOfBoard(x,y):
             break
-        elif board[x][y]=='':
+        elif board[x][y].side=='':
             move.append((x,y))
         elif board[x][y].side==friendly:         
             break
@@ -106,7 +106,7 @@ def Bishop(friendly,x0,y0,board):
         y+=1
         if outOfBoard(x,y):
             break
-        elif board[x][y]=='':
+        elif board[x][y].side=='':
             move.append((x,y))
         elif board[x][y].side==friendly:         
             break
@@ -121,11 +121,106 @@ def Bishop(friendly,x0,y0,board):
         y-=1
         if outOfBoard(x,y):
             break
-        elif board[x][y]=='':
+        elif board[x][y].side=='':
             move.append((x,y))
         elif board[x][y].side==friendly:         
             break
         else:
             take.append((x,y))
             break   
+    return move, take        
+
+def Knight(friendly,x0,y0,board):
+    move=[]
+    take=[]
+
+    x=x0+1
+    y=y0+2
+    if outOfBoard(x,y):
+        pass
+    elif board[x][y].side=='':
+        move.append((x,y))
+    elif board[x][y].side==friendly:         
+        pass
+    else:
+        take.append((x,y))
+
+    x=x0+2
+    y=y0+1
+    if outOfBoard(x,y):
+        pass
+        print('passed')
+    elif board[x][y].side=='':
+        move.append((x,y))
+    elif board[x][y].side==friendly:         
+        pass
+    else:
+        take.append((x,y))
+
+    x=x0+2
+    y=y0-1
+    if outOfBoard(x,y):
+        pass
+    elif board[x][y].side=='':
+        move.append((x,y))
+    elif board[x][y].side==friendly:         
+        pass
+    else:
+        take.append((x,y))
+
+    x=x0+1
+    y=y0-2
+    if outOfBoard(x,y):
+        pass
+    elif board[x][y].side=='':
+        move.append((x,y))
+    elif board[x][y].side==friendly:         
+        pass
+    else:
+        take.append((x,y))
+
+    x=x0-1
+    y=y0-2
+    if outOfBoard(x,y):
+        pass
+    elif board[x][y].side=='':
+        move.append((x,y))
+    elif board[x][y].side==friendly:         
+        pass
+    else:
+        take.append((x,y))
+
+    x=x0-2
+    y=y0-1
+    if outOfBoard(x,y):
+        pass
+    elif board[x][y].side=='':
+        move.append((x,y))
+    elif board[x][y].side==friendly:         
+        pass
+    else:
+        take.append((x,y))
+
+    x=x0-2
+    y=y0+1
+    if outOfBoard(x,y):
+        pass
+    elif board[x][y].side=='':
+        move.append((x,y))
+    elif board[x][y].side==friendly:         
+        pass
+    else:
+        take.append((x,y))
+
+    x=x0-1
+    y=y0+2
+    if outOfBoard(x,y):
+        pass
+    elif board[x][y].side=='':
+        move.append((x,y))
+    elif board[x][y].side==friendly:         
+        pass
+    else:
+        take.append((x,y))
+
     return move, take        
