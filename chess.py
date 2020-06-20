@@ -63,10 +63,11 @@ def pieceLegalMove(x, y, board):
 board=boardGenerate()
 xtest=4
 ytest=4
-board[xtest][ytest]=Piece('w','K')
+board[xtest][ytest]=Piece('w','N')
 
 legalmove=pieceLegalMove(xtest,ytest,board)
-print(legalmove)
+
+print(f'possible movement of a {board[xtest][ytest].side} {board[xtest][ytest].name} at {xtest,ytest}')
 for x,y in legalmove[1]:
     board[x][y]=Piece('',' X')
 
