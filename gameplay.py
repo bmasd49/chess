@@ -9,7 +9,7 @@ class Move:
 class Evaluate:
     @staticmethod
     def value(board):
-        
+        pass
 
 class AI:
     pass       
