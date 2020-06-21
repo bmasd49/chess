@@ -3,7 +3,7 @@ class Board:
         self.pieces = pieces
 
     @classmethod
-    def init(cls):  
+    def init(cls):                          #Initialize the board
         pieceOrder=['R','N','B','Q','K','B','N','R']
         pieces=[[0 for _ in range(8)] for _ in range(8)]
         for i in range(8):
@@ -13,11 +13,11 @@ class Board:
             pieces[i][6]=Piece(i, 0, 'b','p')
         return cls(pieces)
 
-    def copy(self):
+    def copy(self):                         #Copy the board, useful for recursion.
         return self.clone(self)
 
     @classmethod
-    def clone(cls, board):
+    def clone(cls, board):                  
         pieces = [[0 for _ in range(8)] for _ in range(8)]
         for x in range(8):
             for y in range(8):
@@ -29,13 +29,13 @@ class Board:
     def allPossibleMove(self, side):
         pass
 
-    def makeMove(self):
+    def makeMove(self, move):             #Literally move an Piece object with information from the class object "Move".
         pass
 
-    def getPieceAt(self, x, y):
+    def getPieceAt(self, x, y):     #Get the Piece instance at position x, y
         pass
 
-    def inside(self, x ,y):
+    def inside(self, x ,y):         #Check if the value x, y is inside the board.
         pass
 
 
@@ -46,13 +46,13 @@ class Piece:
         self.side= side
         self.name= name
 
-    def display(self):
+    def display(self):              #Show side and name of a Piece
         return self.side +self.name
 
     def copy(self):
-        return Piece(self.x, self.y, self.side, self.name)
+        return Piece(self.x, self.y, self.side, self.name)              #Copy the piece
 
-    def possibleMoves(self, board):
+    def possibleMoves(self, board):                                     #Get all possible moves of a Piece
         if self.name=='p':
             return moveOfPiece.pawn(self, board)  
         elif self.name=='N':
@@ -69,7 +69,7 @@ class Piece:
             return 0    
 
 
-class moveOfPiece:
+class moveOfPiece:                                              #How a piece move, will be finished later
     @staticmethod
     def pawn(piece, board):
         pass
@@ -88,7 +88,7 @@ class moveOfPiece:
 
     @staticmethod 
     def Rook(piece, board):
-        return 'DKM'
+        pass
 
     @staticmethod 
     def King(piece, board):

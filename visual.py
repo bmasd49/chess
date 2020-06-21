@@ -1,11 +1,9 @@
 import os
 def drawBoard(board):
-    drawboard=[[None for _ in range(8)] for _ in range(8)]
+    drawboard=[['  ' for _ in range(8)] for _ in range(8)]
     for i in range(8):
         for j in range(8):
-            if board.pieces[i][j]==0:
-                drawboard[j][i]='  '
-            else:
+            if board.pieces[i][j]!=0:
                 drawboard[j][i]=board.pieces[i][j].display()
 
     clearScreen()
