@@ -6,25 +6,15 @@
 
 
 class Move:
-    def __init__(self, x0, y0, x1, y1, castle):
+    def __init__(self, name, x0, y0, x1, y1):
+        self.name= name
         self.x0= x0
         self.y0= y0
         self.x1= x1
         self.y1= y1
-        self.castle= castle
 
-    # @staticmethod
-    # def castle(cls, side, direction):
-    #     if side == 'w':
-    #         if direction == 'K':
-    #             return cls(4, 0, 6, 0), cls(7, 0, 5, 0)
-    #         elif direction == 'Q':
-    #             return cls(4, 0, 2, 0), cls(0, 0, 3, 0)   
-    #     elif side == 'b':
-    #         if direction == 'K':
-    #             return cls(4, 7, 6, 7), cls(7, 7, 5, 7)
-    #         elif direction == 'Q':
-    #             return cls(4, 7, 2, 7), cls(7, 7, 3, 7)          
+    def display(self):
+        return f'{self.name}{self.x0}{self.y0}->{self.x1}{self.y1}'
 
 
 class Evaluate:
@@ -33,5 +23,12 @@ class Evaluate:
         pass
 
 class AI:
+    @staticmethod
+    def AI_Move():
+        pass
+
+    @staticmethod    
+    def minimaxTree():
+        pass
 
     pass       

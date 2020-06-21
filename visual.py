@@ -14,4 +14,15 @@ def drawBoard(board):
         print('\n    -----------------------------------------')
     print('       0    1    2    3    4    5    6    7  ')
 
-  
+def drawMove(board):
+    i= 1
+    for move in board.moves:
+        i +=1
+        if i%2==0:
+            print(f'Move {int(i/2)}: ', move.display(), end='   ') 
+        
+        else:    
+            print(move.display()) 
+    print()        
+            
+        
