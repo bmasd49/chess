@@ -13,6 +13,20 @@ class Move:
         self.y1= y1
         self.castle= castle
 
+    # @staticmethod
+    # def castle(cls, side, direction):
+    #     if side == 'w':
+    #         if direction == 'K':
+    #             return cls(4, 0, 6, 0), cls(7, 0, 5, 0)
+    #         elif direction == 'Q':
+    #             return cls(4, 0, 2, 0), cls(0, 0, 3, 0)   
+    #     elif side == 'b':
+    #         if direction == 'K':
+    #             return cls(4, 7, 6, 7), cls(7, 7, 5, 7)
+    #         elif direction == 'Q':
+    #             return cls(4, 7, 2, 7), cls(7, 7, 3, 7)          
+
+
 class Evaluate:
     @staticmethod
     def value(board):
