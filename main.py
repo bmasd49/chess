@@ -1,9 +1,7 @@
 import gameplay, data, visual, os
 
 def getPlayerMove(board, side):
-    print('\nPlease input your move as: <x from><y from> <x to><y to>')
-    print('For example, if you want to move a piece from E2 to E4, type: "E2 E4" or "e2 e4" (without quotation marks) then hit <ENTER>')
-    print('Type q or quit to exit.\n')
+
     moveInput= input('Your move is: ')
     if moveInput.lower() in ['q', 'quit', 'exit']:
         return 0
@@ -23,11 +21,11 @@ def getPlayerMove(board, side):
     if board.pieces[x0][y0] == 0:
         print(f'No piece is found at {x0,y0}, please input another square.')
         return getPlayerMove(board, side)
-
-    if gameplay.Move(board.pieces[x0][y0].name, x0, y0, x1, y1).isIn(board.allLegalMove(side)):
-        return gameplay.Move(board.pieces[x0][y0].name, x0, y0, x1, y1)
+    move= gameplay.Move(board.pieces[x0][y0].name, x0, y0, x1, y1, False) 
+    if move.isIn(board.allLegalMove(side)) != False:
+        return move.isIn(board.allLegalMove(side))
     else:     
-        print(f'{gameplay.Move(board.pieces[x0][y0].name, x0, y0, x1, y1).display()} is not a legal move, please input another square.')
+        print(f'{gameplay.Move(board.pieces[x0][y0].name, x0, y0, x1, y1, False).display()} is not a legal move, please input another square.')
         return getPlayerMove(board, side) 
 
         
@@ -35,22 +33,26 @@ def getPlayerMove(board, side):
 if __name__ == "__main__":
 
     gameBoard= data.Board.init()
+    
     while True:
         visual.clearScreen()
+        print('\nPlease input your move as: <x from><y from> <x to><y to>')
+        print('For example, if you want to move a piece from E2 to E4, type: "E2 E4" or "e2 e4" (without quotation marks) then hit <ENTER>')
+        print('Type q or quit to exit.\n')
         visual.drawBoard(gameBoard)
         visual.drawMove(gameBoard)
-        
+
         if gameBoard.moveCounter%2 == 0:
             side= 'w'
-            print('White to move.')
-            print('All legal moves for White:')
+            print('WHITE to move.')
+            # print('All legal moves for White:')
         else:
             side= 'b'    
-            print('Black to move.')
-            print('All legal moves for Black:')
+            print('BLACK to move.')
+            # print('All legal moves for Black:')
 
-        for move in gameBoard.allLegalMove(side):
-            print('  ', move.display())
+        # for move in gameBoard.allLegalMove(side):
+        #     print('  ', move.display())
 
         playerMove= getPlayerMove(gameBoard, side)
         if playerMove == 0:

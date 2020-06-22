@@ -35,7 +35,7 @@ class Board:
                     pieces[x][y] = piece.copy()
         moves= []
         for move in board.moves:
-            moves.append(move.copy)
+            moves.append(move.copy())
         return cls(pieces, board.moveCounter, moves, board.enPassantPawn, board.whiteKing.copy(), board.blackKing.copy())
 
     def allPossibleNonCastleMove(self, side):
@@ -56,7 +56,7 @@ class Board:
                 subBoard.pieces[6][0]= Piece(6, 0, 'w', 'K')
                 moves= subBoard.allPossibleNonCastleMove('b')
                 if (not subBoard.isControlled(4, 0, moves)) and (not subBoard.isControlled(5, 0, moves)) and (not subBoard.isControlled(6, 0, moves)):
-                    move.append(gameplay.Move('K', 4, 0, 6, 0))
+                    move.append(gameplay.Move('K', 4, 0, 6, 0, False))
             
             if self.whiteKing.queenSideCastle and (self.pieces[3][0] == 0) and (self.pieces[2][0] == 0):
                 subBoard= self.copy()
@@ -64,7 +64,7 @@ class Board:
                 subBoard.pieces[2][0]= Piece(2, 0, 'w', 'K')
                 moves= subBoard.allPossibleNonCastleMove('b')
                 if (not subBoard.isControlled(4, 0, moves)) and (not subBoard.isControlled(3, 0, moves)) and (not subBoard.isControlled(2, 0, moves)):
-                    move.append(gameplay.Move('K', 4, 0, 2, 0))
+                    move.append(gameplay.Move('K', 4, 0, 2, 0, False))
 
         elif side == 'b':
             if self.blackKing.kingSideCastle and (self.pieces[5][7] == 0) and (self.pieces[6][7] == 0):
@@ -73,7 +73,7 @@ class Board:
                 subBoard.pieces[6][7]= Piece(6, 7, 'b', 'K')
                 moves= subBoard.allPossibleNonCastleMove('w')
                 if (not subBoard.isControlled(4, 7, moves)) and (not subBoard.isControlled(5, 7, moves)) and (not subBoard.isControlled(6, 7, moves)):
-                    move.append(gameplay.Move('K', 4, 7, 6, 7)) 
+                    move.append(gameplay.Move('K', 4, 7, 6, 7, False)) 
             
             if self.blackKing.queenSideCastle and (self.pieces[3][7] == 0) and (self.pieces[2][7] == 0):
                 subBoard= self.copy()
@@ -81,7 +81,7 @@ class Board:
                 subBoard.pieces[2][7]= Piece(2, 7, 'b', 'K')
                 moves= subBoard.allPossibleNonCastleMove('w')
                 if (not subBoard.isControlled(4, 7, moves)) and (not subBoard.isControlled(3, 7, moves)) and (not subBoard.isControlled(2, 7, moves)):
-                    move.append(gameplay.Move('K', 4, 7, 2, 7))             
+                    move.append(gameplay.Move('K', 4, 7, 2, 7, False))             
         return move
 
     def allLegalMove(self, side):
@@ -100,15 +100,23 @@ class Board:
         y0= move.y0 
         x1= move.x1
         y1= move.y1
-
+       
         if self.enPassantPawn != None:                                  #Remove previous en passant
+            if self.pieces[x0][y0].name == 'p':
+                if self.pieces[x0][y0].side == 'w' and y0 == 4 and x1 == self.enPassantPawn:                #Remove pawn taken en passant
+                    self.pieces[x1][4]= 0
+                elif self.pieces[x0][y0].side == 'b' and y0 == 3 and x1 == self.enPassantPawn:
+                    self.pieces[x1][3]= 0    
+
             self.enPassantPawn= None
 
-        if self.pieces[x0][y0].name == 'p':                   #Creating a new en passant square if a pawn moved two squares
-            if   y0 == 1 and y1 == 3:
+        if self.pieces[x0][y0].name == 'p':                                 
+            if   y0 == 1 and y1 == 3:                                       #Creating a new en passant square if a pawn moved two squares
                 self.enPassantPawn= move.x0
             elif y0 == 6 and y1 == 4:
                 self.enPassantPawn= move.x0
+
+            
 
         if self.pieces[x0][y0].name == 'K':                   
             if   self.pieces[x0][y0].side == 'w':                           #Update white king position
@@ -149,11 +157,9 @@ class Board:
         self.pieces[x1][y1]= self.pieces[x0][y0].moveTo(x1, y1)
         self.pieces[x0][y0]= 0    
 
-        if self.pieces[x1][y1].name == 'p':
-            if y1 == 7:
-                self.pieces[x1][y1].promote()
-            elif y1 == 0:
-                self.pieces[x1][y1].promote()
+        if self.pieces[x1][y1].name == 'p' and y1 in [0, 7]:                                                #Pawn promotion
+            self.pieces[x1][y1].promote()  
+
     @staticmethod
     def inside(x ,y):         #Check if the value x, y is inside the board.
         if (x>-1) and (x<8) and (y>-1) and (y<8):
@@ -239,24 +245,24 @@ class legalMoveOf:
                                                           
         if board.inside(x0, y0 +direction):                                         #Normal move
             if board.pieces[x0][y0 +direction] == 0:
-                move.append(gameplay.Move('p', x0, y0, x0, y0 +direction))
+                move.append(gameplay.Move('p', x0, y0, x0, y0 +direction, False))
                 if   y0==1 and direction == 1 and board.pieces[x0][3] == 0:           #Double move
-                    move.append(gameplay.Move('p',x0, y0, x0, 3))
+                    move.append(gameplay.Move('p',x0, y0, x0, 3, False))
                 elif y0==6 and direction == -1 and board.pieces[x0][4] == 0:
-                    move.append(gameplay.Move('p',x0, y0, x0, 4))
+                    move.append(gameplay.Move('p',x0, y0, x0, 4, False))
 
         for i in [-1, 1]:                                                           #Normal take
             if board.inside(x0 +i, y0 +direction):
-                if board.pieces[x0 +i][y0 +direction] != 0:
-                    move.append(gameplay.Move('p',x0, y0, x0 +i, y0 +direction))
+                if board.pieces[x0 +i][y0 +direction] != 0 and board.pieces[x0 +i][y0 +direction].side != piece.side:
+                    move.append(gameplay.Move('p',x0, y0, x0 +i, y0 +direction, True))
 
 
         if   y0 == 4:                                                                 #En passant take for white
-            if direction == 1  and board.moveCounter %2 == 0 and board.enPassantPawn in [x0-1, x0+1]:
-                    move.append(gameplay.Move('p',x0, y0, board.enPassantPawn, y0 +direction))
+            if direction == 1  and board.enPassantPawn in [x0-1, x0+1]:
+                    move.append(gameplay.Move('p', x0, y0, board.enPassantPawn, y0 +direction, True))
         elif y0 == 3:                                                                   #En passant take for black
-            if direction == -1 and board.moveCounter %2 == 1 and board.enPassantPawn in [x0-1, x0+1]:
-                    move.append(gameplay.Move('p',x0, y0, board.enPassantPawn, y0 +direction))
+            if direction == -1 and board.enPassantPawn in [x0-1, x0+1]:
+                    move.append(gameplay.Move('p', x0, y0, board.enPassantPawn, y0 +direction, True))
 
         return move    
 
@@ -271,9 +277,9 @@ class legalMoveOf:
         for (x, y) in relativeMove:
             if board.inside(x0+x, y0+y):
                 if board.pieces[x0+x][y0+y] == 0:
-                    move.append(gameplay.Move('N', x0, y0, x0 +x, y0 +y))
+                    move.append(gameplay.Move('N', x0, y0, x0 +x, y0 +y, False))
                 elif board.pieces[x0+x][y0+y].side != piece.side:
-                    move.append(gameplay.Move('N', x0, y0, x0 +x, y0 +y))
+                    move.append(gameplay.Move('N', x0, y0, x0 +x, y0 +y, True))
         return move
 
     @staticmethod
@@ -289,11 +295,11 @@ class legalMoveOf:
                 step +=1
                 if board.inside(x0 +step*i[0], y0 +step*i[1]):
                     if board.pieces[x0 +step*i[0]][y0 +step*i[1]] == 0:
-                        move.append(gameplay.Move('B', x0, y0, x0 +step*i[0], y0 +step*i[1]))
+                        move.append(gameplay.Move('B', x0, y0, x0 +step*i[0], y0 +step*i[1], False))
                     elif board.pieces[x0 +step*i[0]][y0 +step*i[1]].side == piece.side:
                         break
                     else: 
-                        move.append(gameplay.Move('B', x0, y0, x0 +step*i[0], y0 +step*i[1]))
+                        move.append(gameplay.Move('B', x0, y0, x0 +step*i[0], y0 +step*i[1], True))
                         break
                 else:
                      break    
@@ -312,11 +318,11 @@ class legalMoveOf:
                 step +=1
                 if board.inside(x0 +step*i[0], y0 +step*i[1]):
                     if board.pieces[x0 +step*i[0]][y0 +step*i[1]] == 0:
-                        move.append(gameplay.Move('Q', x0, y0, x0 +step*i[0], y0 +step*i[1]))
+                        move.append(gameplay.Move('Q', x0, y0, x0 +step*i[0], y0 +step*i[1], False))
                     elif board.pieces[x0 +step*i[0]][y0 +step*i[1]].side == piece.side:
                         break
                     else: 
-                        move.append(gameplay.Move('Q', x0, y0, x0 +step*i[0], y0 +step*i[1]))
+                        move.append(gameplay.Move('Q', x0, y0, x0 +step*i[0], y0 +step*i[1], True))
                         break
                 else:
                      break    
@@ -336,11 +342,11 @@ class legalMoveOf:
                 step +=1
                 if board.inside(x0 +step*i[0], y0 +step*i[1]):
                     if board.pieces[x0 +step*i[0]][y0 +step*i[1]] == 0:
-                        move.append(gameplay.Move('R', x0, y0, x0 +step*i[0], y0 +step*i[1]))
+                        move.append(gameplay.Move('R', x0, y0, x0 +step*i[0], y0 +step*i[1], False))
                     elif board.pieces[x0 +step*i[0]][y0 +step*i[1]].side == piece.side:
                         break
                     else: 
-                        move.append(gameplay.Move('R', x0, y0, x0 +step*i[0], y0 +step*i[1]))
+                        move.append(gameplay.Move('R', x0, y0, x0 +step*i[0], y0 +step*i[1], True))
                         break
                 else:
                      break    
@@ -356,9 +362,9 @@ class legalMoveOf:
         for i in direction:
             if board.inside(x0 +i[0], y0 +i[1]):
                 if board.pieces[x0 +i[0]][y0 +i[1]] == 0:
-                    move.append(gameplay.Move('K', x0, y0, x0 +i[0], y0 +i[1]))
+                    move.append(gameplay.Move('K', x0, y0, x0 +i[0], y0 +i[1], False))
                 elif board.pieces[x0 +i[0]][y0 +i[1]].side != piece.side:
-                    move.append(gameplay.Move('K', x0, y0, x0 +i[0], y0 +i[1]))
+                    move.append(gameplay.Move('K', x0, y0, x0 +i[0], y0 +i[1], True))
         return move  
 
 
