@@ -1,3 +1,4 @@
+import os
 def drawBoard(board):
     drawboard=[['  ' for _ in range(8)] for _ in range(8)]
     for i in range(8):
@@ -5,7 +6,6 @@ def drawBoard(board):
             if board.pieces[i][j]!=0:
                 drawboard[j][i]=board.pieces[i][j].display()
 
-    print(f'\n---> Move {board.moveCounter}')
     print('    -----------------------------------------')    
     for i in range(7,-1,-1):
         print(f' {i}  |',end='')
@@ -23,6 +23,14 @@ def drawMove(board):
         
         else:    
             print(move.display()) 
-    print()        
+    if i%2 == 0:
+        print()     
+       
+
+def clearScreen():
+    if os.name == 'nt': 
+        os.system('cls') 
+    else:
+        os.system('clear')         
             
         
