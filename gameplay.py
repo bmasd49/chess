@@ -14,8 +14,18 @@ class Move:
         self.y1= y1
 
     def display(self):
-        return f'{self.name}{self.x0}{self.y0}->{self.x1}{self.y1}'
+        if self.name == 'p':
+            return f'   {chr(self.x0+97)}{self.y0 +1}->{chr(self.x1+97)}{self.y1 +1}'
+        return f'  {self.name}{chr(self.x0+97)}{self.y0 +1}->{chr(self.x1+97)}{self.y1 +1}'
 
+    def isIn(self, moves):
+        for move in moves:
+            if self.x0 == move.x0 and self.y0 == move.y0 and self.x1 == move.x1 and self.y1 == move.y1:
+                return True
+        return False
+
+    def copy(self):
+        return Move(self.name, self.x0, self.y0, self.x1, self.y1) 
 
 class Evaluate:
     @staticmethod

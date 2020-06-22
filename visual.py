@@ -8,11 +8,11 @@ def drawBoard(board):
 
     print('    -----------------------------------------')    
     for i in range(7,-1,-1):
-        print(f' {i}  |',end='')
+        print(f' {i+1}  |',end='')
         for j in range(8):
             print('',drawboard[i][j],'|',end='')
         print('\n    -----------------------------------------')
-    print('       0    1    2    3    4    5    6    7  ')
+    print('       A    B    C    D    E    F    G    H  ')
 
 def drawMove(board):
     i= 1
@@ -24,7 +24,8 @@ def drawMove(board):
         else:    
             print(move.display()) 
     if i%2 == 0:
-        print()     
+        print()   
+    print()      
        
 
 def clearScreen():

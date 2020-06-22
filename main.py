@@ -1,26 +1,36 @@
 import gameplay, data, visual, os
 
-def getPlayerMove(board):
+def getPlayerMove(board, side):
     print('\nPlease input your move as: <x from><y from> <x to><y to>')
-    print('For example, if you want to move a piece from (4,1) to (4,3), type: "41 43" (without quotation marks) then hit <ENTER>')
+    print('For example, if you want to move a piece from E2 to E4, type: "E2 E4" or "e2 e4" (without quotation marks) then hit <ENTER>')
     print('Type q or quit to exit.\n')
     moveInput= input('Your move is: ')
     if moveInput.lower() in ['q', 'quit', 'exit']:
         return 0
     try:
-        x0= int(moveInput[0])
-        y0= int(moveInput[1])
-        x1= int(moveInput[3])
-        y1= int(moveInput[4])
+        x0= ord(moveInput[0].lower())-97
+        y0= int(moveInput[1])-1
+        x1= ord(moveInput[3].lower())-97
+        y1= int(moveInput[4])-1
     except ValueError:
         print('Wrong input format, please type your move again.')
-        return getPlayerMove(board)
+        return getPlayerMove(board, side)
 
-    if board.pieces[x0][y0] != 0:
-        return gameplay.Move(board.pieces[x0][y0].name, x0, y0, x1, y1)
-    else:
+    if not (board.inside(x0, y0) and board.inside(x1, y1)):
+        print(f'Your move is out of the board, please try again.')
+        return getPlayerMove(board, side)
+
+    if board.pieces[x0][y0] == 0:
         print(f'No piece is found at {x0,y0}, please input another square.')
-        return getPlayerMove(board)
+        return getPlayerMove(board, side)
+
+    if gameplay.Move(board.pieces[x0][y0].name, x0, y0, x1, y1).isIn(board.allLegalMove(side)):
+        return gameplay.Move(board.pieces[x0][y0].name, x0, y0, x1, y1)
+    else:     
+        print(f'{gameplay.Move(board.pieces[x0][y0].name, x0, y0, x1, y1).display()} is not a legal move, please input another square.')
+        return getPlayerMove(board, side) 
+
+        
 
 if __name__ == "__main__":
 
@@ -29,10 +39,25 @@ if __name__ == "__main__":
         visual.clearScreen()
         visual.drawBoard(gameBoard)
         visual.drawMove(gameBoard)
-        playerMove= getPlayerMove(gameBoard)
+        
+        if gameBoard.moveCounter%2 == 0:
+            side= 'w'
+            print('White to move.')
+            print('All legal moves for White:')
+        else:
+            side= 'b'    
+            print('Black to move.')
+            print('All legal moves for Black:')
+
+        for move in gameBoard.allLegalMove(side):
+            print('  ', move.display())
+
+        playerMove= getPlayerMove(gameBoard, side)
         if playerMove == 0:
             break
+        
         gameBoard.makeMove(playerMove)
+        
         
 
 

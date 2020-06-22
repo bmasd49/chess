@@ -33,9 +33,12 @@ class Board:
                 piece = board.pieces[x][y]
                 if piece != 0:
                     pieces[x][y] = piece.copy()
-        return cls(pieces, board.moveCounter, board.moves, board.enPassantPawn, board.whiteKing, board.blackKing)
+        moves= []
+        for move in board.moves:
+            moves.append(move.copy)
+        return cls(pieces, board.moveCounter, moves, board.enPassantPawn, board.whiteKing.copy(), board.blackKing.copy())
 
-    def allNonCastlePossibleMove(self, side):
+    def allPossibleNonCastleMove(self, side):
         move= []
         for x in range(8):
             for y in range(8):
@@ -51,7 +54,7 @@ class Board:
                 subBoard= self.copy()
                 subBoard.pieces[5][0]= Piece(5, 0, 'w', 'K')
                 subBoard.pieces[6][0]= Piece(6, 0, 'w', 'K')
-                moves= subBoard.allNonCastlePossibleMove('b')
+                moves= subBoard.allPossibleNonCastleMove('b')
                 if (not subBoard.isControlled(4, 0, moves)) and (not subBoard.isControlled(5, 0, moves)) and (not subBoard.isControlled(6, 0, moves)):
                     move.append(gameplay.Move('K', 4, 0, 6, 0))
             
@@ -59,7 +62,7 @@ class Board:
                 subBoard= self.copy()
                 subBoard.pieces[3][0]= Piece(3, 0, 'w', 'K')
                 subBoard.pieces[2][0]= Piece(2, 0, 'w', 'K')
-                moves= subBoard.allNonCastlePossibleMove('b')
+                moves= subBoard.allPossibleNonCastleMove('b')
                 if (not subBoard.isControlled(4, 0, moves)) and (not subBoard.isControlled(3, 0, moves)) and (not subBoard.isControlled(2, 0, moves)):
                     move.append(gameplay.Move('K', 4, 0, 2, 0))
 
@@ -68,7 +71,7 @@ class Board:
                 subBoard= self.copy()
                 subBoard.pieces[5][7]= Piece(5, 7, 'b', 'K')
                 subBoard.pieces[6][7]= Piece(6, 7, 'b', 'K')
-                moves= subBoard.allNonCastlePossibleMove('w')
+                moves= subBoard.allPossibleNonCastleMove('w')
                 if (not subBoard.isControlled(4, 7, moves)) and (not subBoard.isControlled(5, 7, moves)) and (not subBoard.isControlled(6, 7, moves)):
                     move.append(gameplay.Move('K', 4, 7, 6, 7)) 
             
@@ -76,13 +79,19 @@ class Board:
                 subBoard= self.copy()
                 subBoard.pieces[3][7]= Piece(3, 7, 'b', 'K')
                 subBoard.pieces[2][7]= Piece(2, 7, 'b', 'K')
-                moves= subBoard.allNonCastlePossibleMove('w')
+                moves= subBoard.allPossibleNonCastleMove('w')
                 if (not subBoard.isControlled(4, 7, moves)) and (not subBoard.isControlled(3, 7, moves)) and (not subBoard.isControlled(2, 7, moves)):
                     move.append(gameplay.Move('K', 4, 7, 2, 7))             
         return move
 
-    def allPossibleMove(self, side):
-        return self.allNonCastlePossibleMove(side) + self.allCastleMove(side)
+    def allLegalMove(self, side):
+        moves= []
+        for move in self.allPossibleNonCastleMove(side):
+            subBoard= self.copy()
+            subBoard.makeMove(move)
+            if not subBoard.isChecked(side):
+                moves.append(move)
+        return moves + self.allCastleMove(side)
 
     def makeMove(self, move):             #Literally move a Piece object with information from the class object "Move".
         self.moveCounter += 1
@@ -113,7 +122,7 @@ class Board:
             elif self.pieces[x0][y0].side == 'b':                           #Update black king position
                 self.blackKing.x= x1
                 self.blackKing.y= y1
-                if self.blackKing.kingSideCastle:
+                if self.blackKing.kingSideCastle:                           #If king moved then cannot castle anymore
                     self.blackKing.kingSideCastle= False
                 if self.blackKing.queenSideCastle:    
                     self.blackKing.queenSideCastle= False   
@@ -125,7 +134,7 @@ class Board:
                 self.pieces[3][y0]= self.pieces[0][y0].moveTo(3, y0)
                 self.pieces[0][y0]= 0
 
-        if self.pieces[x0][y0].name == 'R':
+        if self.pieces[x0][y0].name == 'R':                                 #If rook moved then cannot castle anymore
             if x0 == 0:
                 if y0 == 0:
                     self.whiteKing.queenSideCastle= False
@@ -158,12 +167,12 @@ class Board:
                 return True
         return False
 
-    def isChecked(self, side, moves):
+    def isChecked(self, side):
         if side == 'w':
-            if self.isControlled(self.whiteKing.x, self.whiteKing.y, moves):
+            if self.isControlled(self.whiteKing.x, self.whiteKing.y, self.allPossibleNonCastleMove('b')):
                 return True
         elif side == 'b':
-            if self.isControlled(self.blackKing.x, self.blackKing.y, moves):
+            if self.isControlled(self.blackKing.x, self.blackKing.y, self.allPossibleNonCastleMove('w')):
                 return True        
         return False
 
@@ -211,7 +220,9 @@ class King:
         self.y= y
         self.kingSideCastle= kingSideCastle
         self.queenSideCastle= queenSideCastle
-        
+
+    def copy(self):
+        return King(self.x, self.y, self.kingSideCastle, self.queenSideCastle)    
 
 
 class legalMoveOf:
@@ -229,9 +240,9 @@ class legalMoveOf:
         if board.inside(x0, y0 +direction):                                         #Normal move
             if board.pieces[x0][y0 +direction] == 0:
                 move.append(gameplay.Move('p', x0, y0, x0, y0 +direction))
-                if   y0==1 and direction==1 and board.pieces[x0][3] == 0:           #Double move
+                if   y0==1 and direction == 1 and board.pieces[x0][3] == 0:           #Double move
                     move.append(gameplay.Move('p',x0, y0, x0, 3))
-                elif y0==6 and direction==1 and board.pieces[x0][4] == 0:
+                elif y0==6 and direction == -1 and board.pieces[x0][4] == 0:
                     move.append(gameplay.Move('p',x0, y0, x0, 4))
 
         for i in [-1, 1]:                                                           #Normal take
