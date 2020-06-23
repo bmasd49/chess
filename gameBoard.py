@@ -33,10 +33,10 @@ class Board:
                 piece = board.pieces[x][y]
                 if piece != 0:
                     pieces[x][y] = piece.copy()
-        moves= []
-        for move in board.moves:
-            moves.append(move.copy())
-        return cls(pieces, board.moveCounter, moves, board.enPassantPawn, board.whiteKing.copy(), board.blackKing.copy())
+        # moves= []
+        # for move in board.moves:
+        #     moves.append(move.copy())
+        return cls(pieces, board.moveCounter, [], board.enPassantPawn, board.whiteKing.copy(), board.blackKing.copy())
 
     def allPossibleNonCastleMove(self, side):
         move= []
