@@ -163,6 +163,17 @@ class Board:
                 elif y0 == 7:
                     self.blackKing.kingSideCastle= False 
 
+        if x1 == 0:
+            if y1 == 0:
+                self.whiteKing.queenSideCastle= False
+            elif y1 == 7:
+                self.blackKing.queenSideCastle= False   
+        elif x1 ==7:
+            if y1 == 0:
+                self.whiteKing.kingSideCastle= False
+            elif y1 == 7:
+                self.blackKing.kingSideCastle= False                      
+
         self.pieces[x1][y1]= self.pieces[x0][y0].moveTo(x1, y1)
         self.pieces[x0][y0]= 0    
 

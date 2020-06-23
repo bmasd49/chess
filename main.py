@@ -3,7 +3,7 @@ import gamePlay, gameBoard, terminalGraphic, os
 def getPlayerMove(board, side):
 
     moveInput= input('Your move is: ')
-    if moveInput.lower() in ['q', 'quit', 'exit']:
+    if moveInput.lower() in ['q', 'quit', 'exit', ':q']:
         return 0
     moveInput.replace(' ','')    
     try:
@@ -26,7 +26,7 @@ def getPlayerMove(board, side):
     if move.isIn(board.allLegalMove(side)) != False:
         return move.isIn(board.allLegalMove(side))
     else:     
-        print(f'{gamePlay.Move(board.pieces[x0][y0].name, x0, y0, x1, y1, False).display()} is not a legal move, please input another square.')
+        print(f'{gamePlay.Move(board.pieces[x0][y0].name, x0, y0, x1, y1, False).display()} is not a legal move, please input another move.')
         return getPlayerMove(board, side) 
 
         
@@ -35,31 +35,24 @@ if __name__ == "__main__":
     gameBoard= gameBoard.Board.init()
     
     while True:
-        terminalGraphic.clearScreen()
-        print('\nPlease input your move as: <x from><y from> <x to><y to>')
-        print('For example, if you want to move a piece from E2 to E4, type: "E2 E4", "E2E4, "e2 e4", or "e2e4" (without quotation marks) then hit <ENTER>')
-        print('Type q or quit to exit.\n')
-        terminalGraphic.drawBoard(gameBoard)
-        terminalGraphic.drawMove(gameBoard)
-        print(f'Board score:  {gamePlay.Evaluate.materialValue(gameBoard)/10:+.2f}')
-        if gameBoard.moveCounter%2 == 0:
-            side= 'w'
-            print('WHITE to move.')
-            # print('All legal moves for White:')
-        else:
-            side= 'b'    
-            print('BLACK to move.')
-            # print('All legal moves for Black:')
+        terminalGraphic.printGameInfo(gameBoard)
+        print(f'Board score:  {gamePlay.Evaluate.value(gameBoard)/10:+.2f}')
 
-        # for move in gameBoard.allLegalMove(side):
-        #     print('  ', move.display())
-
-        playerMove= getPlayerMove(gameBoard, side)
+        if len(gameBoard.allLegalMove('w')) == 0:
+            print('You lose, try again next time!')
+        else:    
+            playerMove= getPlayerMove(gameBoard, 'w')
         if playerMove == 0:
             break
-        
         gameBoard.makeMove(playerMove)
-
+        terminalGraphic.printGameInfo(gameBoard)
+        print('Give me a second to beat you...')
+        AIMove=gamePlay.AI.AI_Move(gameBoard)
+        if AIMove != None:
+            gameBoard.makeMove(AIMove)
+        else:
+            print('GG I can\', you won!!')
+            break
     print('Thanks for playing the game!')        
         
 
