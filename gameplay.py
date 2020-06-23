@@ -4,7 +4,7 @@
 # I think you can work with the evaluate class first, because you know more than me about how to evaluate a position in chess.
 # We may work on the AI together later.
 
-
+import gameData
 class Move:
     def __init__(self, name, x0, y0, x1, y1, take):
         self.name= name
@@ -38,8 +38,29 @@ class Move:
         return Move(self.name, self.x0, self.y0, self.x1, self.y1, self.take) 
 
 class Evaluate:
+    
+
+    @staticmethod
+    def materialValue(board):
+        value= 0
+        for x in range(8):
+            for y in range(8):
+                if board.pieces[x][y] != 0:
+                    if board.pieces[x][y].side == 'w':
+                        value += gameData.materialValueDictionary[board.pieces[x][y].name]
+                    elif board.pieces[x][y].side == 'b':
+                        value -= gameData.materialValueDictionary[board.pieces[x][y].name]
+        return value
+
+    @staticmethod
+    def positionalValue(board):
+        
+        pass
+
+
     @staticmethod
     def value(board):
+
         pass
 
 class AI:
