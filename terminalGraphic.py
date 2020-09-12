@@ -15,8 +15,10 @@ def drawBoard(board):
     print('       A    B    C    D    E    F    G    H  ')
 
 def drawMove(board):
+    currentMove= len(board.moves)
+    initMove= max(0, currentMove-10)
     i= 1
-    for move in board.moves:
+    for move in board.moves[initMove:currentMove]:
         i +=1
         if i%2==0:
             print(f'Move{int(i/2):3d}: ', move.display(), end='   ') 

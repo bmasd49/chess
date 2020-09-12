@@ -212,7 +212,35 @@ class Piece:
 
     def display(self):              #Show side and name of a Piece
         # return f'{self.x}{self.y}'
-        return self.side+self.name
+        if self.side == 'w':
+            if self.name == 'p':
+                return '\u2659 '
+            elif self.name == 'N':
+                return '\u2658 '
+            elif self.name == 'B':    
+                return '\u2657 '
+            elif self.name == 'R':
+                return '\u2656 '
+            elif self.name == 'Q':
+                return '\u2655 '
+            elif self.name == 'K':
+                return '\u2654 '  
+        elif self.side == 'b':
+            if self.name == 'p':
+                return '\u265F '
+            elif self.name == 'N':
+                return '\u265E '
+            elif self.name == 'B':    
+                return '\u265D '
+            elif self.name == 'R':
+                return '\u265C '
+            elif self.name == 'Q':
+                return '\u265B '
+            elif self.name == 'K':
+                return '\u265A '                  
+
+
+
     def copy(self):
         return Piece(self.x, self.y, self.side, self.name)              #Copy the piece
 
