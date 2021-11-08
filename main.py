@@ -1,7 +1,6 @@
 import gamePlay, gameBoard, terminalGraphic, os
 
 def getPlayerMove(board, side):
-
     moveInput= input('Your move is: ')
     if moveInput.lower() in ['q', 'quit', 'exit', ':q']:
         return 0

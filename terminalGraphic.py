@@ -17,7 +17,7 @@ def drawBoard(board):
 def drawMove(board):
     currentMove= len(board.moves)
     initMove= max(0, currentMove-10)
-    i= 1
+    i= initMove+1 
     for move in board.moves[initMove:currentMove]:
         i +=1
         if i%2==0:
